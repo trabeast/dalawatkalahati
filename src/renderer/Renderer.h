@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <GLFW/glfw3.h>
+#include "common.h"
 #include <string>
 #include <map>
 
@@ -19,8 +19,7 @@ namespace DTK {
         static void initialize();
     private:
         inline static std::map<const std::string, dtk_window*> windows;
-        static void setOpenGlVersion(int majorVersion, int minorVersion);
-        static void createWindow(const std::string name);
+        static void createWindow(const std::string &name);
     };
 
 } // DTK
