@@ -4,36 +4,20 @@
 #pragma once
 
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_INFO
-#include <spdlog/spdlog.h>
-#include <spdlog/sinks/stdout_sinks.h>
 #include <spdlog/logger.h>
+#include <spdlog/sinks/stdout_sinks.h>
+#include <spdlog/spdlog.h>
 
-using dtk_logger = std::shared_ptr<spdlog::logger>;
-using dtk_logger_level = spdlog::level::level_enum;
+#define DTK_LOGGER_INFO(...) DTK::Logger::console->info(__VA_ARGS__)
+#define DTK_LOGGER_ERROR(...) DTK::Logger::console->error(__VA_ARGS__)
 
 namespace DTK {
+    using logger_t = std::shared_ptr<spdlog::logger>;
 
     class Logger {
     public:
-        enum class LEVEL {
-            TRACE = SPDLOG_LEVEL_TRACE,
-            DEBUG = SPDLOG_LEVEL_DEBUG,
-            INFO = SPDLOG_LEVEL_INFO,
-            WARN = SPDLOG_LEVEL_WARN,
-            ERROR = SPDLOG_LEVEL_ERROR,
-            FATAL = SPDLOG_LEVEL_CRITICAL
-        };
-
         static void initialize();
-
-        template<typename T>
-        static void log(LEVEL level, const T &value) {
-            if(level < activeLevel) return;
-            logger->log(static_cast<dtk_logger_level>(level), value);
-        }
-    private:
-        inline static dtk_logger logger;
-        inline static LEVEL activeLevel = LEVEL::INFO;
+        inline static logger_t console;
     };
 
-} // DTK
+}// namespace DTK

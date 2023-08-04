@@ -4,21 +4,28 @@
 
 #pragma once
 
-#include "common.h"
+#include "LogChecker.h"
 #include <string>
 
 namespace DTK {
 
-    enum Type {
-        VERTEX = GL_VERTEX_SHADER,
-        FRAGMENT = GL_FRAGMENT_SHADER,
-    };
+    using shader_t = unsigned int;
 
-    class Shader {
+
+    class Shader : protected LogChecker {
     public:
-        unsigned int create(Type type, std::string &filePath);
+        enum class Type {
+            VERTEX = GL_VERTEX_SHADER,
+            FRAGMENT = GL_FRAGMENT_SHADER,
+        };
+
+        static shader_t create(Type type);
+        static bool compile(shader_t shader, const std::string &filePath);
+        static void destroy(shader_t shader);
+
     private:
-        std::string readContents(std::string &filePath);
+        static void readContents(const std::string &filePath,
+                                 std::string &source);
     };
 
-} // DTK
+}// namespace DTK
