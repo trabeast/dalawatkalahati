@@ -5,13 +5,11 @@
 #include "Shader.h"
 #include <fstream>
 #include <iterator>
-#include <stdexcept>
 
 namespace DTK {
     shader_t Shader::create(Type type) {
-
-        shader_t shader = glCreateShader(static_cast<GLenum>(type));
-
+        shader_t shader;
+        GL_CHECK(shader = glCreateShader(static_cast<GLenum>(type)));
         return shader;
     }
 
@@ -21,15 +19,15 @@ namespace DTK {
         readContents(filePath, source);
         sourcePtr = source.c_str();
 
-        glShaderSource(shader, 1, &sourcePtr, nullptr);
-        glCompileShader(shader);
+        GL_CHECK(glShaderSource(shader, 1, &sourcePtr, nullptr));
+        GL_CHECK(glCompileShader(shader));
 
         return check<shader_t>(shader, DTK_COMPILE_STATUS, glGetShaderiv,
                                glGetShaderInfoLog);
     }
 
     void Shader::destroy(shader_t shader) {
-        glDeleteShader(shader);
+        GL_CHECK(glDeleteShader(shader));
     }
 
     void Shader::readContents(const std::string &filePath,
@@ -38,7 +36,7 @@ namespace DTK {
             std::ifstream file(filePath, std::ios_base::in);
             if (!file.is_open()) {
                 DTK_LOGGER_ERROR("Failed to open!");
-                throw std::ios_base::failure("Failed to open " + filePath);
+                abort();
             }
             using Iterator = std::istreambuf_iterator<char>;
             source = std::string(Iterator{file}, Iterator{});

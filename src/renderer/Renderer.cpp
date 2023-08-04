@@ -5,12 +5,12 @@
 #include "Renderer.h"
 #include "Shader.h"
 #include "ShaderProgram.h"
-#include <stdexcept>
 
 #define DTK_WINDOW_HEIGHT 600
 #define DTK_WINDOW_WIDTH 800
 #define DTK_OPENGL_MAJOR_VERSION 4
 #define DTK_OPENGL_MINOR_VERSION 6
+#define DTK_PRIMARY_WINDOW "primary"
 
 namespace DTK {
     void Renderer::initialize() {
@@ -63,7 +63,7 @@ namespace DTK {
 
         if (!Shader::compile(vertexShader, "shaders/vertex.vert") ||
             !Shader::compile(fragmentShader, "shaders/fragment.frag")) {
-            throw std::runtime_error("Shader compilation failed");
+            abort();
         }
 
         shader_program_t shaderProgram = ShaderProgram::create();

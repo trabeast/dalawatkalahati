@@ -3,7 +3,6 @@
 //
 
 #pragma once
-#include "Logger.h"
 #include "common.h"
 #include <functional>
 #include <stdexcept>
@@ -17,24 +16,26 @@
 namespace DTK {
     class LogChecker {
     protected:
-        template<typename ShaderObj>
+        // ShaderType can be either a shader or a program.
+
+        template<typename ShaderType>
         using gl_param_getter_t =
-                std::function<void(ShaderObj, unsigned int, int *)>;
+                std::function<void(ShaderType, unsigned int, int *)>;
 
-        template<typename ShaderObj>
+        template<typename ShaderType>
         using gl_info_log_t =
-                std::function<void(ShaderObj, int, int *, char *)>;
+                std::function<void(ShaderType, int, int *, char *)>;
 
-        template<typename ShaderObj>
-        static bool check(ShaderObj shaderObj, unsigned int status,
-                          gl_param_getter_t<ShaderObj> getter,
-                          gl_info_log_t<ShaderObj> infoLog) {
+        template<typename ShaderType>
+        static bool check(ShaderType shaderObj, unsigned int status,
+                          gl_param_getter_t<ShaderType> getter,
+                          gl_info_log_t<ShaderType> infoLog) {
             int success;
             std::vector<char> log(DTK_LOG_SIZE);
             int length;
-            getter(shaderObj, status, &success);
+            GL_CHECK(getter(shaderObj, status, &success));
             if (!success) {
-                infoLog(shaderObj, DTK_LOG_SIZE, &length, &log[0]);
+                GL_CHECK(infoLog(shaderObj, DTK_LOG_SIZE, &length, &log[0]));
                 DTK_LOGGER_ERROR("{}", log.data());
                 return false;
             }
