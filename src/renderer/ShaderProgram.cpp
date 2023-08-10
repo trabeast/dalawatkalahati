@@ -11,7 +11,7 @@ namespace DTK {
         return program;
     }
     void ShaderProgram::attachShader(shader_program_t program,
-                                     shader_t shader) {
+                                     shader_unit shader) {
         GL_CHECK(glAttachShader(program, shader));
     }
     void ShaderProgram::link(shader_program_t program) {

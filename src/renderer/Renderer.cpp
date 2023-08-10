@@ -58,23 +58,19 @@ namespace DTK {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 
-        shader_t vertexShader = Shader::create(Shader::Type::VERTEX);
-        shader_t fragmentShader = Shader::create(Shader::Type::FRAGMENT);
+        Shader vertexShader = Shader(Shader::Type::VERTEX);
+        Shader fragmentShader = Shader(Shader::Type::FRAGMENT);
 
-        if (!Shader::compile(vertexShader, "shaders/vertex.vert") ||
-            !Shader::compile(fragmentShader, "shaders/fragment.frag")) {
+        if (!vertexShader.compile("shaders/vertex.vert") ||
+            !fragmentShader.compile("shaders/fragment.frag")) {
             abort();
         }
 
         shader_program_t shaderProgram = ShaderProgram::create();
 
-        ShaderProgram::attachShader(shaderProgram, vertexShader);
-        ShaderProgram::attachShader(shaderProgram, fragmentShader);
+        ShaderProgram::attachShader(shaderProgram, vertexShader.shader);
+        ShaderProgram::attachShader(shaderProgram, fragmentShader.shader);
         ShaderProgram::link(shaderProgram);
-
-        Shader::destroy(vertexShader);
-        Shader::destroy(fragmentShader);
-
 
         while (!glfwWindowShouldClose(primaryWindow)) {
             glClear(GL_COLOR_BUFFER_BIT);

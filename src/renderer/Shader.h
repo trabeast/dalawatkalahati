@@ -9,8 +9,7 @@
 
 namespace DTK {
 
-    using shader_t = unsigned int;
-
+    using shader_unit = unsigned int;
 
     class Shader : protected LogChecker {
     public:
@@ -19,13 +18,18 @@ namespace DTK {
             FRAGMENT = GL_FRAGMENT_SHADER,
         };
 
-        static shader_t create(Type type);
-        static bool compile(shader_t shader, const std::string &filePath);
-        static void destroy(shader_t shader);
+        explicit Shader(Type type);
+        virtual ~Shader();
+
+        const shader_unit shader;
+
+        [[nodiscard]] bool compile(const std::string &filePath) const;
 
     private:
         static void readContents(const std::string &filePath,
                                  std::string &source);
+
+        shader_unit create(Type type);
     };
 
 }// namespace DTK

@@ -14,7 +14,7 @@ namespace DTK {
     class ShaderProgram : protected LogChecker {
     public:
         static shader_program_t create();
-        static void attachShader(shader_program_t program, shader_t shader);
+        static void attachShader(shader_program_t program, shader_unit shader);
         static void link(shader_program_t program);
         static void use(shader_program_t program);
     };

@@ -7,13 +7,9 @@
 #include <iterator>
 
 namespace DTK {
-    shader_t Shader::create(Type type) {
-        shader_t shader;
-        GL_CHECK(shader = glCreateShader(static_cast<GLenum>(type)));
-        return shader;
-    }
+    Shader::Shader(Type type) : shader(create(type)) {}
 
-    bool Shader::compile(shader_t shader, const std::string &filePath) {
+    bool Shader::compile(const std::string &filePath) const {
         std::string source;
         const char *sourcePtr;
         readContents(filePath, source);
@@ -22,13 +18,14 @@ namespace DTK {
         GL_CHECK(glShaderSource(shader, 1, &sourcePtr, nullptr));
         GL_CHECK(glCompileShader(shader));
 
-        return check<shader_t>(shader, DTK_COMPILE_STATUS, glGetShaderiv,
-                               glGetShaderInfoLog);
+        return check<shader_unit>(shader, DTK_COMPILE_STATUS, glGetShaderiv,
+                                  glGetShaderInfoLog);
     }
 
-    void Shader::destroy(shader_t shader) {
+    Shader::~Shader() {
         GL_CHECK(glDeleteShader(shader));
     }
+
 
     void Shader::readContents(const std::string &filePath,
                               std::string &source) {
@@ -43,5 +40,10 @@ namespace DTK {
         } catch (const std::ios_base::failure &e) {
             DTK_LOGGER_ERROR("Caused by {}", e.what());
         }
+    }
+    shader_unit Shader::create(Shader::Type type) {
+        shader_unit sh;
+        GL_CHECK(sh = glCreateShader(static_cast<GLenum>(type)));
+        return sh;
     }
 }// namespace DTK
