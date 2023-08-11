@@ -66,16 +66,16 @@ namespace DTK {
             abort();
         }
 
-        shader_program_t shaderProgram = ShaderProgram::create();
+        ShaderProgram shaderProgram = ShaderProgram();
 
-        ShaderProgram::attachShader(shaderProgram, vertexShader.shader);
-        ShaderProgram::attachShader(shaderProgram, fragmentShader.shader);
-        ShaderProgram::link(shaderProgram);
+        shaderProgram.attachShader(vertexShader.shader);
+        shaderProgram.attachShader(fragmentShader.shader);
+        shaderProgram.link();
 
         while (!glfwWindowShouldClose(primaryWindow)) {
             glClear(GL_COLOR_BUFFER_BIT);
 
-            ShaderProgram::use(shaderProgram);
+            shaderProgram.use();
             glBindVertexArray(VAO);
             glDrawArrays(GL_TRIANGLES, 0, 3);
 

@@ -9,14 +9,20 @@
 
 namespace DTK {
 
-    using shader_program_t = unsigned int;
+    using shader_program_unit = unsigned int;
 
     class ShaderProgram : protected LogChecker {
     public:
-        static shader_program_t create();
-        static void attachShader(shader_program_t program, shader_unit shader);
-        static void link(shader_program_t program);
-        static void use(shader_program_t program);
+        explicit ShaderProgram();
+        virtual ~ShaderProgram();
+
+        void attachShader(shader_unit shader) const;
+        void link() const;
+        void use() const;
+
+    private:
+        const shader_program_unit program;
+        static shader_program_unit create();
     };
 
 }// namespace DTK

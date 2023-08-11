@@ -29,7 +29,7 @@ namespace DTK {
         static void readContents(const std::string &filePath,
                                  std::string &source);
 
-        shader_unit create(Type type);
+        static shader_unit create(Type type);
     };
 
 }// namespace DTK
