@@ -11,8 +11,7 @@ set(DTK_SOURCES main.cpp
         src/logger/Logger.cpp
         src/renderer/Renderer.cpp
         src/renderer/Shader.cpp
-        src/renderer/ShaderProgram.cpp
-        src/renderer/program.h)
+        src/renderer/ShaderProgram.cpp)
 
 set(DTK_HEADERS src/logger/
         src/renderer/
