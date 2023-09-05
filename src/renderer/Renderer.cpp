@@ -3,6 +3,7 @@
 //
 
 #include "Renderer.h"
+#include "Buffer.h"
 #include "Shader.h"
 #include "ShaderProgram.h"
 
@@ -38,24 +39,20 @@ namespace DTK {
                             0.0f,  0.0f,  0.5f, 0.0f};
 
         unsigned int VAO;
-        unsigned int VBO;
+        Buffer vbo = Buffer();
         glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
 
         glBindVertexArray(VAO);
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        vbo.bind();
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
                      GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
-                     GL_STATIC_DRAW);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
                               nullptr);
         glEnableVertexAttribArray(0);
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        vbo.unbind();
         glBindVertexArray(0);
 
         Shader vertexShader = Shader(Shader::Type::VERTEX);
