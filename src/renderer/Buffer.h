@@ -17,6 +17,8 @@ namespace DTK {
         void bind() const;
         void unbind() const;
 
+        void initializeData(const void *data, size_t size) const;
+
         const buffer_unit buffer;
 
     private:
