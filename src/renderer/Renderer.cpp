@@ -39,7 +39,7 @@ namespace DTK {
                             0.0f,  0.0f,  0.5f, 0.0f};
 
         unsigned int VAO;
-        Buffer vbo = Buffer();
+        Buffer vbo;
         glGenVertexArrays(1, &VAO);
 
         glBindVertexArray(VAO);
@@ -55,15 +55,15 @@ namespace DTK {
         vbo.unbind();
         glBindVertexArray(0);
 
-        Shader vertexShader = Shader(Shader::Type::VERTEX);
-        Shader fragmentShader = Shader(Shader::Type::FRAGMENT);
+        Shader vertexShader(Shader::Type::VERTEX);
+        Shader fragmentShader(Shader::Type::FRAGMENT);
 
         if (!vertexShader.compile("shaders/vertex.vert") ||
             !fragmentShader.compile("shaders/fragment.frag")) {
             abort();
         }
 
-        ShaderProgram shaderProgram = ShaderProgram();
+        ShaderProgram shaderProgram;
 
         shaderProgram.attachShader(vertexShader.shader);
         shaderProgram.attachShader(fragmentShader.shader);
